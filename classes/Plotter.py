@@ -1,38 +1,21 @@
-# imports
-import numpy as np
-import pygame
-from pygame.locals import *
-import sys
+##  NAME:           Plotter.py
+##  TYPE:           class
+##  AUTHOR:         Matthias
+##  CREATED:        01.05.15
+##  LAST MODIFIED:  01.05.15
+#
+##  SUMMARY:
+##   Main program class for instantiating the program, handling events and updating the main loop
+#
+##  CLASS DESCRIPTION:
+##      Member definitions:
+##      - 
+#
+##      Member variables:
+##      - 
 
-# DEFINITIONS DEFINITIONS DEFINITIONS DEFINITIONS DEFINITIONS DEFINITIONS DEFINITIONS
 
 
-def acceleration_operator(function, speed, diff_order):
-    diff1 = numeric_diff(function, diff_order)
-    diff2 = numeric_mydiff(diff1, diff_order)
-    result = np.zeros(function.size)
-    np.put(result, np.arange(1, diff2.size), diff2)
-    result = result*float(speed**2)
-    return result
-    
-def gaussian( mu, sig, start, stop, datapoints):
-    x = np.linspace(start, stop, datapoints)
-    return np.exp(-np.power(x - mu,  2.)/(2*np.power(sig, 2.)))
-    
-def start_data_function(mode, parameters):
-    values = {
-        'zeros'         : np.zeros(parameters[0]), 
-        'gaussian' : gaussian(parameters[3], parameters[4], parameters[1], parameters[2], parameters[0])
-    }[mode]
-    return values
-    
-class axes:
-    def __init__(self):
-        pass
-
-class graph:
-    def __init__(self):
-        pass
 
 class Plotter:
     def __init__(self, surface, colors):
@@ -55,6 +38,7 @@ class Plotter:
         self.axes_set = False
         self.graph_set = False
         self.transparent = (0, 0, 0, 0)
+        pygame.init()
     def get_values(self, values):
         self.data = values
     def update(self):
@@ -117,65 +101,3 @@ class Plotter:
     def refresh(self):
         self.update()
         pygame.display.update()
-
-        
-class Datamanager:
-    def __init__(self, data):
-        self.data = data
-        self.speed = np.zeros(data.size)
-        self.acceleration = np.zeros(data.size)
-    def give_data(self):
-        return self.data
-    def calculate(self, c_speed):
-        self.data += self.speed
-        self.speed += self.acceleration
-        self.acceleration = acceleration_operator(self.data, c_speed)
-
-# constants
-BLACK = pygame.Color(0, 0, 0, 255)
-GREEN = pygame.Color(0, 255, 0, 255)
-colors = (BLACK, GREEN)
-
-# changeable values
-datapoint_number = 1000
-mu = 50
-sig = 10
-x_start = 0
-x_stop = 100
-speed = 1
-mode='zeros'
-parameters = (datapoint_number, x_start, x_stop, mu, sig)
-
-# initialization
-pygame.init()
-
-plotter = Plotter( colors)
-plotter.add_axes()
-plotter.add_plot(0, (-1, 1), (-10, 10))
-plotter.add_axes()
-plotter.add_plot(1, (-1, 1), (-10, 10))
-
-x = np.linspace(x_start, x_stop, datapoint_number)
-start_data  = start_data_function('gaussian', parameters) 
-
-endind = start_data.size - 1
-start_data[endind] = 0 
-datamanager = Datamanager(start_data)
-plotter.get_values(datamanager.give_data())
-plotter.plot_data()
-
-if __name__ == "__main__":
-    plotter = Plotter()
-    # program loop
-    while True:
-        if plotter.heard():
-            datamanager.calculate(speed)
-            plotter.get_values(datamanager.give_data())
-            plotter.plot_data()
-        plotter.update()
-        plotter.listen()
-        plotter.refresh()
-        fpsClock.tick(30)
-
-
-
