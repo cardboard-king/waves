@@ -15,8 +15,9 @@ class Graph:
         self.ylength = limits[1][1] - limits[1][0]
         self.data1 = data1
         self.data2 = data2
+        self.background = WHITE
     def create(self):
-    	self.surface.fill(WHITE)
+    	self.surface.fill(self.background)
     	self.draw_dots()
     	return self.surface
     def draw_dots(self):
@@ -31,9 +32,7 @@ class Graph:
     		pygame.draw.line(self.surface,BLACK,pos,nextpos)
     def calculate_container_pixel(self,xvalue,yvalue):
     	xnorm = float(xvalue)/float(self.xlength)
-    	print xnorm
     	xfloat = xnorm*self.rect.width
-    	print xfloat
     	xcoord = int(xfloat)
     	#
     	ynorm = yvalue/float(self.xlength)
@@ -41,3 +40,5 @@ class Graph:
     	ycoord = self.rect.height - int(yfloat)
     	#
     	return (xcoord,ycoord)
+    def get_background(self):
+    	return self.background
