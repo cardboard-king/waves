@@ -16,6 +16,15 @@
 
 
 
+import pygame
+
+
 class GUI:
-	def __init__(self):
+	def __init__(self,rect):
+		pass
+	def add_screen(self):
+		pass
+	def add_button(self):
+		pass
+	def update(self,screen):
 		pass

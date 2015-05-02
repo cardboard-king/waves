@@ -1,3 +1,4 @@
+
 ##	NAME:			main.py
 ##	TYPE:			entry point
 ##	AUTHOR:			Matthias
@@ -8,6 +9,7 @@
 ##	 A file for giving an entry point to the software
 #
 
+from classes import Plotter
 
-if __name__ == "__main__":
-	pass
+plotter = Plotter.Plotter()
+
